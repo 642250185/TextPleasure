@@ -26,7 +26,12 @@
           port: port,
           log: true
         }, function() {
-        pomelo.request("connector.entryHandler.entry", "hello pomelo", function(data) {
+            // gate.gateHandler.getConnector
+            // connector.entryHandler.entry
+            let body = {
+
+            };
+          pomelo.request("connector.entryHandler.publish", "hello pomelo", function(data) {
             alert(data.msg);
           });
         });
