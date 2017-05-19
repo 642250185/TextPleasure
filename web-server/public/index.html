@@ -27,11 +27,11 @@
           log: true
         }, function() {
             // gate.gateHandler.getConnector
-            // connector.entryHandler.entry
+            // connector.entryHandler.login
             let body = {
-
+              username: ""
             };
-          pomelo.request("connector.entryHandler.publish", "hello pomelo", function(data) {
+          pomelo.request("connector.entryHandler.login", body, function(data) {
             alert(data.msg);
           });
         });

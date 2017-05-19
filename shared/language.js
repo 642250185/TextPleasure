@@ -3,9 +3,18 @@
  */
 
 module.exports = {
-    createError: '创建失败',
-    objectError: '没有数据',
-    requestError: '该请求无效'
+    common: {
+        successfully: "successfully",
+        createFailed: "failed to create",
+        objectError: "没有数据",
+        requestError: "该请求无效"
+    },
+    gate: {
+        serverEmpty: "The server doesn't exist"
+    },
+    connector: {
+
+    }
 };
 
 

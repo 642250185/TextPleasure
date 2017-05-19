@@ -1,18 +1,24 @@
 {
-  "development":{
-      "gate": [
-          {"id": "gate", "host": "127.0.0.1", "port": 3049, "clientPort": 3009, "frontend": true}
-      ],
-      "connector": [
-          {"id": "connector", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 3010, "frontend": true}
-      ]
-  },
-  "production":{
-      "gate": [
-          {"id": "gate", "host": "127.0.0.1", "port": 3049, "clientPort": 3009, "frontend": true}
-      ],
-      "connector": [
-          {"id": "connector", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 3010, "frontend": true}
-      ]
-  }
+    "development":{
+        "gate": [
+            {"id": "gate", "host": "127.0.0.1", "port": 3049, "clientPort": 3009, "frontend": true}
+        ],
+        "connector": [
+            {"id": "connector", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 3010, "frontend": true}
+        ],
+        "role": [
+            {"id": "role", "host": "127.0.0.1", "port": 3011}
+        ]
+    },
+    "production":{
+        "gate": [
+            {"id": "gate", "host": "127.0.0.1", "port": 3049, "clientPort": 3009, "frontend": true}
+        ],
+        "connector": [
+            {"id": "connector", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 3010, "frontend": true}
+        ],
+        "role": [
+            {"id": "role", "host": "127.0.0.1", "port": 3011}
+        ]
+    }
 }

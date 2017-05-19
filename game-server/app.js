@@ -18,7 +18,7 @@ app.set('errorHandler', function (err, msg, resp, session, cb) {
     });
 });
 
-app.configure('production|development', 'gate|connector', function(){
+app.configure('development|production', 'gate|connector', function(){
   app.set('connectorConfig', {
       connector : pomelo.connectors.hybridconnector,
       heartbeat : 3,
@@ -26,6 +26,12 @@ app.configure('production|development', 'gate|connector', function(){
       useProtobuf : true
     });
 });
+
+app.configure('development|production', 'role', function(){
+
+});
+
+
 
 app.start();
 

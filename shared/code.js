@@ -3,8 +3,8 @@
  */
 
 module.exports = {
-    failed: 500,
-    success: 200
+    OK: 200,
+    FAIL: 500
 };
 
 
