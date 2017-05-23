@@ -99,6 +99,16 @@ class channelServiceController {
         });
     }
 
+    static getchannelMembers(sceneId, playerId){
+        channelService.getMember(sceneId, playerId, (err, count) => {
+            console.info('err, count: %j', err, count);
+            if(err){return err}
+            return count;
+        });
+    }
+
+
+
 }
 
 

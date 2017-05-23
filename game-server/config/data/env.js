@@ -21,8 +21,8 @@ module.exports.redis = {
     identity           : 'gameMirror',
     enableOfflineQueue : true,
     auth_pass: '123456',
-    password: null,
-    port: 6379,
+    password:"",
+    port: null,
     host: IP,
     db: 0,
 };

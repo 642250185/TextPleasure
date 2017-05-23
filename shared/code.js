@@ -3,8 +3,22 @@
  */
 
 module.exports = {
+
+    // 请求标示
     OK: 200,
-    FAIL: 500
+    FAIL: 500,
+
+    enterGameCode: 1000,
+    leaveGameCode: 1001,
+
+
+
+    // 场景
+    sceneOne: "sceneOne",
+
+    // 广播route
+    enterGame:"enterGame",
+    leaveGame:"leaveGame"
 };
 
 

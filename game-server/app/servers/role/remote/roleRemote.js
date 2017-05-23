@@ -3,8 +3,7 @@
  */
 const co = require('co');
 const baseRemote = require('../../baseRemote');
-const roleHandler = require('../handler/roleHandler');
-const channelService = require('../../../initial/channelServiceController');
+const enterLogic = require('../../../logic/enterLogic');
 
 module.exports = (app) => {return new roleRemote(app)};
 
@@ -12,20 +11,33 @@ class roleRemote extends baseRemote {
 
     constructor(app){
         super(app);
-        //this.roleHandler = new _roleHandler();
+        this.enterlogic = new enterLogic();
     }
 
-    * enterGameGenerator(uid, params){
-        console.info('enterGameGenerator');
-        let aaa = yield roleHandler.enterGame(uid, params);
-        console.info('aaa: %j', aaa);
-        return 1;
+    *enterGameGenerator(uid, params){
+        return yield this.enterlogic.enterGameLogic(uid, params);
     }
+
+    *leaveGameGenerator(uid, params){
+        return yield this.enterlogic.leaveGameLogic(uid, params);
+    }
+
 }
 
 
 roleRemote.prototype.enterGame = function (uid, params, callback) {
     co(this.enterGameGenerator(uid, params)).then((result) => {
-        console.info(result);
+        callback(null, result);
+    }).catch((error) => {
+        callback(null, error);
+    });
+};
+
+
+roleRemote.prototype.leaveGame = function (uid, params, callback) {
+    co(this.leaveGameGenerator(uid, params)).then((result) => {
+        callback(null, result);
+    }).catch((error) => {
+        callback(null, error);
     });
 };

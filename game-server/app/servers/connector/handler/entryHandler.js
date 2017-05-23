@@ -36,12 +36,16 @@ class entryHandler extends baseHandler {
             }
             co(this.logOut(session));
         });
-        this.app.rpc.role.roleRemote.enterGame(session, uid, {}, null);
-        callback(null, player);
+        this.app.rpc.role.roleRemote.enterGame(session, uid, {serverId: serverId}, (err, doc) => {
+            callback(null, doc);
+        });
     }
 
     *logOut(session){
         const uid = session.uid;
-        session.unbind(uid);
+        this.app.rpc.role.roleRemote.leaveGame(session, uid, {serverId: session.get("serverId")}, (err, doc) => {
+            session.unbind(uid);
+            console.info('leaveGame > doc: %j', doc);
+        });
     }
 }

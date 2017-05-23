@@ -32,7 +32,7 @@
               username: ""
             };
           pomelo.request("connector.entryHandler.login", body, function(data) {
-            alert(data.msg);
+            console.info(data.msg);
           });
         });
       }

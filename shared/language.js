@@ -13,7 +13,8 @@ module.exports = {
         serverEmpty: "The server doesn't exist"
     },
     connector: {
-
+        enterGame: "玩家进入游戏",
+        leaveGame: "玩家离开游戏"
     }
 };
 
