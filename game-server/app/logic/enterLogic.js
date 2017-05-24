@@ -24,7 +24,7 @@ class enterLogic {
                 message: language.connector.enterGame,
                 uid: uid
             };
-            channelService.pushMessageByUid(code.enterGame, params.serverId, room.roomList, code.sceneOne, enterGameInfo, null);
+            channelService.pushMessageByUid(code.onEnterGame, params.serverId, room.roomList, code.sceneOne, enterGameInfo, null);
         }
         return room;
     }
@@ -39,7 +39,7 @@ class enterLogic {
                 message: language.connector.leaveGame,
                 uid: uid
             };
-            channelService.pushMessageByUid(code.leaveGame, params.serverId, room.roomList, code.sceneOne, leaveGameInfo, null);
+            channelService.pushMessageByUid(code.onLeaveGame, params.serverId, room.roomList, code.sceneOne, leaveGameInfo, null);
         }
         channelService.leaveUidAndSceneId(code.sceneOne, uid, params.serverId, null);
         return room;

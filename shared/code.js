@@ -17,8 +17,8 @@ module.exports = {
     sceneOne: "sceneOne",
 
     // 广播route
-    enterGame:"enterGame",
-    leaveGame:"leaveGame"
+    onEnterGame:"onEnterGame",
+    onLeaveGame:"onLeaveGame"
 };
 
 

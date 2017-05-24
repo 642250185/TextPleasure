@@ -3,6 +3,7 @@
  */
 const _ = require('lodash');
 const baseHandler = require('../../baseHandler');
+const code = require('../../../../../shared/code');
 const language = require('../../../../../shared/language');
 
 module.exports = (app) => {return new gateHandler(app)};
@@ -17,15 +18,17 @@ class gateHandler extends baseHandler{
         const servers = this.app.getServersByType('connector');
         if(_.isEmpty(servers)){
             cb(null, {
+                code: code.FAIL,
+                message: language.gate.serverEmpty,
                 host: '',
-                port: 0,
-                message: language.gate.serverEmpty
+                port: 0
             });
         } else {
             cb(null, {
+                code: code.OK,
+                message: language.common.successfully,
                 host: servers[0].clientHost,
-                port: servers[0].clientPort,
-                message: language.common.successfully
+                port: servers[0].clientPort
             });
         }
     }
