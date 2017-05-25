@@ -1,6 +1,6 @@
 body {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background-color: aquamarine;
 }
 
@@ -35,13 +35,17 @@ body {
     height: 80px;
     /*background-color: red;*/
     position: fixed;
-    bottom: 16px;
+    bottom: 0;
 }
 
 #toolbar {
     width: 100%;
     height: 30px;
     background-color: #006699;
+}
+
+#toolbar .status {
+    padding-left: 0;
 }
 
 #toolbar .status ul {
@@ -67,12 +71,12 @@ body {
     width: 100%;
     height: 50px;
     text-align: left;
-    line-height: 50px;
+    line-height: 40px;
     background-color: burlywood;
 }
 
 #QandA input {
     border-radius: 20px;
     text-align: center;
-    border: 0px;
+    border: 0;
 }
