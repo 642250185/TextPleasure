@@ -9,6 +9,7 @@ class roleHandler extends baseHandler{
 
     answer(msg, session, callback){
         console.info('answer ...... , :', msg);
+        console.info('answer ...... , :', msg);
         callback(null, msg);
     }
 

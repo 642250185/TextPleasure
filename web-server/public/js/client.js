@@ -67,6 +67,7 @@ $(document).ready(function () {
             answer: answerB
         }, function (data) {
             console.info('answerB > Click: ', data);
+            /**/
         });
     });
 
