@@ -5,16 +5,11 @@
 const baseHandler = require('../../baseHandler');
 module.exports = (app) => {return new roleHandler(app)};
 
-class roleHandler {
+class roleHandler extends baseHandler{
 
-
-    enterGame(uid, params){
-        console.info('roleHandler ...... uid, :', uid);
-        return new Promise((resolve, reject) => {
-            resolve(uid);
-        });
+    answer(msg, session, callback){
+        console.info('answer ...... , :', msg);
+        callback(null, msg);
     }
 
 }
-
-// module.exports = roleHandler;
