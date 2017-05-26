@@ -10,11 +10,21 @@ $(document).ready(function () {
     hideTool();
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
+        $(".status .name").text("jeep");
     });
 
     pomelo.on("onLeaveGame", function (data) {
         console.info('玩家下线通知: ', data);
     });
+
+    pomelo.on("onNextQuestion", function (data) {
+        console.info("下一个问题的数据",data);
+        $(".question").text(data.question.description);
+        $(".answerA").attr("value", data.question.option1);
+        $(".answerB").attr("value", data.question.option2);
+    });
+
+
 
     // 处理登录按钮
     $(".login").click(function () {

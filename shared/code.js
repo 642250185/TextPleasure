@@ -8,17 +8,18 @@ module.exports = {
     OK: 200,
     FAIL: 500,
 
-    enterGameCode: 1000,
-    leaveGameCode: 1001,
-
-
-
     // 场景
     sceneOne: "sceneOne",
 
+    // 广播code
+    enterGameCode: 1000,
+    leaveGameCode: 1001,
+    nextQuestion: 1002,
+
     // 广播route
     onEnterGame:"onEnterGame",
-    onLeaveGame:"onLeaveGame"
+    onLeaveGame:"onLeaveGame",
+    onNextQuestion: "onNextQuestion"
 };
 
 

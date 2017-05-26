@@ -1,0 +1,34 @@
+/**
+ * Created by root on 17-5-26.
+ */
+
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+
+let questionSchema = new Schema({
+    questionId: {
+        type: Number
+    },
+    description: {
+        type: String
+    },
+    defense: {  // 防御
+        type: Number
+    },
+    attack: {   // 攻击
+        type: Number
+    },
+    option1: {  //
+        type: String
+    },
+    option2: {
+        type: String
+    },
+    createDate: {
+        type: Date
+    }
+});
+
+
+
+module.exports = mongoose.model('question',questionSchema);

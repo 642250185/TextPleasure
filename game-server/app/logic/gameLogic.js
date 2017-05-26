@@ -6,11 +6,13 @@ const code = require('../../../shared/code');
 const language = require('../../../shared/language');
 const channelService = require('../initial/channelServiceController');
 const roomDBService = require('../db/dbService/roomDBService');
+const questionDBService = require('../db/dbService/questionDBService');
 
 class enterLogic {
 
     constructor(){
         this.roomService = new roomDBService();
+        this.questionService = new questionDBService();
     }
 
     *enterGameLogic(uid, params) {
@@ -44,6 +46,26 @@ class enterLogic {
         channelService.leaveUidAndSceneId(code.sceneOne, uid, params.serverId, null);
         return room;
     }
+
+    /**
+     * 获得下一个问题
+     * @param questionId
+     * @param params
+     * @returns {*}
+     */
+    *nextQuestion(questionId, params){
+        console.info('4 nextQuestion ..............');
+        let questionDoc = yield this.questionService.getQuestionById(questionId);
+        console.info('questionDoc: %j', questionDoc);
+        const nextQuestionInfo = {
+            code: code.nextQuestion,
+            message: language.logic.nextQuestion,
+            question: questionDoc,
+        };
+        channelService.pushMessageByUid(code.onNextQuestion, params.serverId, params.uid, code.sceneOne, nextQuestionInfo, null);
+        return questionDoc;
+    }
+
 
 }
 
