@@ -17,6 +17,7 @@ class roleHandler extends baseHandler{
 
     answer(msg, session, callback){
         console.info('answer ...... , :', msg);
+
         co(this.answerOption(msg, session, callback));
     }
 

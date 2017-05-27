@@ -12,6 +12,12 @@ let PlayerSchema = new Schema({
     username: {
         type: String
     },
+    defense: {  // 防御
+        type: Number
+    },
+    attack: {   // 攻击
+        type: Number
+    },
     createDate: {
         type: Date
     }

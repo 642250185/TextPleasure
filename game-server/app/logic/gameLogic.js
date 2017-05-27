@@ -5,13 +5,16 @@
 const code = require('../../../shared/code');
 const language = require('../../../shared/language');
 const channelService = require('../initial/channelServiceController');
+
 const roomDBService = require('../db/dbService/roomDBService');
+const playerDBService = require('../db/dbService/playerDBService');
 const questionDBService = require('../db/dbService/questionDBService');
 
 class enterLogic {
 
     constructor(){
         this.roomService = new roomDBService();
+        this.playerService = new playerDBService();
         this.questionService = new questionDBService();
     }
 
@@ -20,15 +23,22 @@ class enterLogic {
         let room = yield this.roomService.addRoom(code.sceneOne, uid);
         console.info('roomList.length: %j', room.roomList.length);
         channelService.addPlayerUUIDToScene(code.sceneOne, uid, params.serverId, null);
+        const playerId = uid.split("*")[0];
+        const player = yield this.playerService.getPlayerByPlayerId(playerId);
+        const question = yield this.questionService.getQuestionById(1);
         if(room.roomList.length > 1){
             const enterGameInfo = {
                 code: code.enterGameCode,
                 message: language.connector.enterGame,
-                uid: uid
+                player: {
+                    username: player.username,
+                    defense: player.defense,
+                    attack: player.attack
+                }
             };
             channelService.pushMessageByUid(code.onEnterGame, params.serverId, room.roomList, code.sceneOne, enterGameInfo, null);
         }
-        return room;
+        return {player: player, question: question};
     }
 
     *leaveGameLogic(uid, params){

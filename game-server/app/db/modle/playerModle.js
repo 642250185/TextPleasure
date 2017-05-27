@@ -15,7 +15,9 @@ class playerModle {
         return new Promise((resolve, reject) => {
             let player = new playerSchema();
             player.playerId = playerId;
-            player.username = utils.getNickname();
+            player.username = params.username;
+            player.defense = params.defense;
+            player.attack = params.attack;
             player.createDate = utils.formatDate(new Date());
             playerSchema.create(player, (err, doc) => {
                 if(err) reject(err);
@@ -27,6 +29,15 @@ class playerModle {
     static * findPlayerByUserName(username){
         return new Promise((resolve, reject) => {
             playerSchema.findOne({username: username}, (err, doc) => {
+                if(err) reject(err);
+                resolve(doc);
+            });
+        });
+    }
+
+    static * findPlayerByPlayerId(playerId){
+        return new Promise((resolve, reject) => {
+            playerSchema.findOne({playerId: playerId}, (err, doc) => {
                 if(err) reject(err);
                 resolve(doc);
             });

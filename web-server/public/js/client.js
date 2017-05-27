@@ -10,7 +10,9 @@ $(document).ready(function () {
     hideTool();
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
-        $(".status .name").text("jeep");
+        $(".status .name").text(data.player.username);
+        $(".status .defense").text(data.player.defense);
+        $(".status .attack").text(data.player.attack);
     });
 
     pomelo.on("onLeaveGame", function (data) {
@@ -46,6 +48,7 @@ $(document).ready(function () {
                     username: nickName
                 }, function (data) {
                     console.info('login > data:', data);
+                    initPlayerAndQuestionInfo(data);
                     hideRegister();
                     showTool();
                 });
@@ -121,7 +124,16 @@ function hideRegister() {
     $("#register").hide();
 }
 
-
+function initPlayerAndQuestionInfo(data) {
+    // 玩家信息
+    $(".status .name").text(data.player.username);
+    $(".status .defense").text(data.player.defense);
+    $(".status .attack").text(data.player.attack);
+    // 问答信息
+    $(".question").text(data.question.description);
+    $(".answerA").attr("value", data.question.option1);
+    $(".answerB").attr("value", data.question.option2);
+}
 
 
 

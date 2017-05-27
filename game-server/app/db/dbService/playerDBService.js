@@ -17,6 +17,10 @@ class playerDBService {
         return yield playerModle.findPlayerByUserName(userName);
     }
 
+    *getPlayerByPlayerId(playerId){
+        return yield playerModle.findPlayerByPlayerId(playerId);
+    }
+
 }
 
 

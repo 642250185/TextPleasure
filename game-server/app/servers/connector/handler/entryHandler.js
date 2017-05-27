@@ -22,7 +22,7 @@ class entryHandler extends baseHandler {
 	    let serverId = this.app.get("serverId");
 	    let uid = null;
         if(_.isEmpty(player)){  // 新玩家注册
-            player = yield this.playerService.addPlayer({});
+            player = yield this.playerService.addPlayer({username: msg.username, defense: 5, attack: 10});
         }
         uid = `${player.playerId}*${player.username}`;
         session.bind(uid);
