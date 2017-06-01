@@ -10,7 +10,7 @@ const roomDBService = require('../db/dbService/roomDBService');
 const playerDBService = require('../db/dbService/playerDBService');
 const questionDBService = require('../db/dbService/questionDBService');
 
-class enterLogic {
+class gameLogic {
 
     constructor(){
         this.roomService = new roomDBService();
@@ -69,6 +69,10 @@ class enterLogic {
         console.info('4 > question: %j', question);
         let player = yield this.playerService.getPlayerByPlayerId(params.uid.split("*")[0]);
 
+        let combat = gameLogic.setPlayerCombat({defense:question.defense, attack: question.attack}, {defense:player.defense, attack: player.attack});
+        // ...... 将数据存储到玩家，
+
+        // ...... 将数据广播到web页面
 
         const nextQuestionInfo = {
             code: code.nextQuestion,
@@ -98,6 +102,4 @@ class enterLogic {
 
 
 
-
-
-module.exports = enterLogic;
+module.exports = gameLogic;
