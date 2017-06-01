@@ -14,7 +14,8 @@ module.exports = {
     },
     connector: {
         enterGame: "玩家进入游戏",
-        leaveGame: "玩家离开游戏"
+        leaveGame: "玩家离开游戏",
+        enterGameForSelf: "玩家自己进入游戏"
     },
     logic: {
         nextQuestion: "下一个问题的数据"

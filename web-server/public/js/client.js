@@ -24,9 +24,11 @@ $(document).ready(function () {
         $(".question").text(data.question.description);
         $(".answerA").attr("value", data.question.option1);
         $(".answerB").attr("value", data.question.option2);
+
+        // 给隐藏属性设置值
+        $(".hiddenA").attr("value", data.question.index_x);
+        $(".hiddenB").attr("value", data.question.index_y);
     });
-
-
 
     // 处理登录按钮
     $(".login").click(function () {
@@ -61,10 +63,12 @@ $(document).ready(function () {
     // 处理选项一
     $(".answerA").click(function () {
         var answerA = $(".answerA").attr("value");
+        var hidden = $(".hiddenA").attr("value");
         console.info('answerA: ', answerA);
+        console.info('hidden: ', hidden);
         var route = "role.roleHandler.answer";
         pomelo.request(route, {
-            index : 1,
+            hidden: hidden,
             answer: answerA
         }, function (data) {
             console.info('answerA > Click: ', data);
@@ -73,19 +77,16 @@ $(document).ready(function () {
 
     $(".answerB").click(function () {
         var answerB = $(".answerB").attr("value");
+        var hidden = $(".hiddenB").attr("value");
         console.info('answerB: ', answerB);
         var route = "role.roleHandler.answer";
         pomelo.request(route, {
-            index : 2,
+            hidden: hidden,
             answer: answerB
         }, function (data) {
             console.info('answerB > Click: ', data);
         });
     });
-
-
-
-
 
 });
 
@@ -124,7 +125,12 @@ function hideRegister() {
     $("#register").hide();
 }
 
+/**
+ * 玩家上线后，设置玩家的信息及首个问答数据。
+ * @param data
+ */
 function initPlayerAndQuestionInfo(data) {
+    console.info('client >>> data: ', data);
     // 玩家信息
     $(".status .name").text(data.player.username);
     $(".status .defense").text(data.player.defense);
@@ -133,17 +139,8 @@ function initPlayerAndQuestionInfo(data) {
     $(".question").text(data.question.description);
     $(".answerA").attr("value", data.question.option1);
     $(".answerB").attr("value", data.question.option2);
+
+    $(".hiddenA").attr("value", data.question.index_x);
+    $(".hiddenB").attr("value", data.question.index_y);
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

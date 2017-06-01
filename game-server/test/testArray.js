@@ -9,7 +9,8 @@ let roomList = [
     "d90de4203f9611e7bdb579d9b823d328*Karen"
 ];
 
-console.info('roomList: %j', roomList);
+
+/*console.info('roomList: %j', roomList);
 
 for(let i = 0; i < roomList.length; i++){
     if(roomList[i] == j){
@@ -18,7 +19,7 @@ for(let i = 0; i < roomList.length; i++){
     }
 }
 
-console.info('roomList: %j', roomList);
+console.info('roomList: %j', roomList);*/
 
 
 

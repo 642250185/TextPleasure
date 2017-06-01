@@ -9,6 +9,12 @@ let questionSchema = new Schema({
     questionId: {
         type: Number
     },
+    index_x: {      // 问题id索引
+        type: Number
+    },
+    index_y: {      // 问题y坐标索引
+        type: Number
+    },
     description: {
         type: String
     },

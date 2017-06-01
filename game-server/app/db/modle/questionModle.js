@@ -15,6 +15,8 @@ class questionModle {
         return new Promise((resolve, reject) => {
             let question = new questionSchema();
             question.questionId = params.questionId;
+            question.index_x = params.index_x;
+            question.index_y = params.index_y;
             question.description = params.description;
             question.defense = params.defense;
             question.attack = params.attack;

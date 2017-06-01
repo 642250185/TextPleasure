@@ -15,8 +15,10 @@ module.exports = {
     enterGameCode: 1000,
     leaveGameCode: 1001,
     nextQuestion: 1002,
+    enterGameForSelfCode: 1003,
 
     // 广播route
+    onEnterGameForSelf:"onEnterGameForSelf",
     onEnterGame:"onEnterGame",
     onLeaveGame:"onLeaveGame",
     onNextQuestion: "onNextQuestion"

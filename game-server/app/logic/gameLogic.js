@@ -65,19 +65,38 @@ class enterLogic {
      */
     *nextQuestion(questionId, params){
         console.info('4 nextQuestion ..............');
-        let questionDoc = yield this.questionService.getQuestionById(questionId);
-        console.info('questionDoc: %j', questionDoc);
+        let question = yield this.questionService.getQuestionById(questionId);
+        console.info('4 > question: %j', question);
+        let player = yield this.playerService.getPlayerByPlayerId(params.uid.split("*")[0]);
+
+
         const nextQuestionInfo = {
             code: code.nextQuestion,
             message: language.logic.nextQuestion,
-            question: questionDoc,
+            question: question,
         };
         channelService.pushMessageByUid(code.onNextQuestion, params.serverId, params.uid, code.sceneOne, nextQuestionInfo, null);
-        return questionDoc;
+        return question;
     }
 
+    /**
+     * 战斗部分
+     * @param question
+     * @param player
+     * @returns {{attack: number, defense: number}}
+     */
+    static setPlayerCombat(question, player){
+        let attack = 0; let defense = 0;
+        if(player.defense > question.attack){
+            defense = player.defense - question.attack;
+        }
+        attack = player.attack + question.attack;
+        return {attack: attack, defense: defense}
+    }
 
 }
+
+
 
 
 
