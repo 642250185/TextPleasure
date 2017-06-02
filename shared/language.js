@@ -18,7 +18,8 @@ module.exports = {
         enterGameForSelf: "玩家自己进入游戏"
     },
     logic: {
-        nextQuestion: "下一个问题的数据"
+        nextQuestion: "下一个问题的数据",
+        playerProperty: "设置玩家的属性值"
     }
 };
 

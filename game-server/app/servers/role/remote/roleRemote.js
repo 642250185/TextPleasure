@@ -22,9 +22,8 @@ class roleRemote extends baseRemote {
         return yield this.gamelogic.leaveGameLogic(uid, params);
     }
 
-    *getNextQuestionGenerator(questionId, params){
-        console.info('3 getNextQuestionGenerator ..............');
-        return yield this.gamelogic.nextQuestion(questionId, params);
+    *getNextQuestionGenerator(nextQuestionId, params){
+        return yield this.gamelogic.nextQuestion(nextQuestionId, params);
     }
 
 }
@@ -47,9 +46,8 @@ roleRemote.prototype.leaveGame = function (uid, params, callback) {
     });
 };
 
-roleRemote.prototype.getNextQuestion = function (questionId, params, callback) {
-    console.info('2 getNextQuestion ..............');
-    co(this.getNextQuestionGenerator(questionId, params)).then((result) => {
+roleRemote.prototype.getNextQuestion = function (nextQuestionId, params, callback) {
+    co(this.getNextQuestionGenerator(nextQuestionId, params)).then((result) => {
         callback(null, result);
     }).catch((error) => {
         callback(null, error);

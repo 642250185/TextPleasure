@@ -21,6 +21,10 @@ class playerDBService {
         return yield playerModle.findPlayerByPlayerId(playerId);
     }
 
+    *editPlayerByPlayerId(playerId, params){
+        return yield playerModle.updatePlayerByPlayerId(playerId, params);
+    }
+
 }
 
 

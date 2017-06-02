@@ -16,12 +16,14 @@ module.exports = {
     leaveGameCode: 1001,
     nextQuestion: 1002,
     enterGameForSelfCode: 1003,
+    playerPropertyCode: 1004,
 
     // 广播route
     onEnterGameForSelf:"onEnterGameForSelf",
     onEnterGame:"onEnterGame",
     onLeaveGame:"onLeaveGame",
-    onNextQuestion: "onNextQuestion"
+    onNextQuestion: "onNextQuestion",
+    onPlayerProperty: "onPlayerProperty"
 };
 
 

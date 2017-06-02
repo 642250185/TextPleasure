@@ -44,6 +44,24 @@ class playerModle {
         });
     }
 
+    static * updatePlayerByPlayerId(playerId, params){
+        return new Promise((resolve, reject) => {
+            try {
+                playerSchema.findOne({playerId: playerId}, (err, doc) => {
+                    doc.attack = params.attack;
+                    doc.defense = params.defense;
+                    doc.save((err, value) => {
+                        if(err) reject(err);
+                        resolve(value);
+                    });
+                });
+            } catch (err){
+                console.error('err: %j', err);
+                reject(err);
+            }
+        });
+    }
+
 }
 
 

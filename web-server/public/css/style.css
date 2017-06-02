@@ -80,3 +80,16 @@ body {
     text-align: center;
     border: 0;
 }
+
+/*------>>>结束区<<<------*/
+#godie {
+    width: auto;
+    height: 100px;
+    background-color: #FF0000;
+}
+
+#godie h1 {
+    margin-top: 0;
+    text-align: center;
+    line-height: 100px;
+}

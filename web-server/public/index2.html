@@ -20,19 +20,34 @@
         <script src="js/client.js"></script>
     </head>
     <body>
+        <div id="register">
+            <input type="text" class="nickName" value="" placeholder="请输入昵称"/>
+            <input type="button" class="login" value=">">
+        </div>
+
         <div id="tool">
             <div id="toolbar">
-                <ul id="status">
-                    <li>昵称: <span id="name">张三</span></li>
-                    <li>HP: <span id="hp">98</span></li>
-                    <li>MP: <span id="mp">70</span></li>
+                <ul class="status">
+                    <li>昵称: <span class="name"></span></li>
+                    <li>攻击: <span class="attack"></span></li>
+                    <li>防御: <span class="defense"></span></li>
                 </ul>
             </div>
             <div id="QandA">
-                <span class="question">问题: 你饿吗？</span>
-                <input class="answerA" type="button" value="饿"/>
-                <input class="answerB" type="button" value="不饿"/>
+                问题: <span class="question"></span>
+                <input class="answerA" type="button" value=""/>
+                <input class="answerB" type="button" value=""/>
+
+                <input class="hiddenA" type="hidden" value=""/>
+                <input class="hiddenB" type="hidden" value=""/>
+
+                <input class="questionId" type="hidden" value=""/>
             </div>
         </div>
+
+        <div id="godie">
+            <h1>Game Over</h1>
+        </div>
+
     </body>
 </html>

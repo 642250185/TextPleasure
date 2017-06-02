@@ -19,9 +19,7 @@ class gameLogic {
     }
 
     *enterGameLogic(uid, params) {
-        console.info('uid, params: %j', uid, params);
         let room = yield this.roomService.addRoom(code.sceneOne, uid);
-        console.info('roomList.length: %j', room.roomList.length);
         channelService.addPlayerUUIDToScene(code.sceneOne, uid, params.serverId, null);
         const playerId = uid.split("*")[0];
         const player = yield this.playerService.getPlayerByPlayerId(playerId);
@@ -42,9 +40,7 @@ class gameLogic {
     }
 
     *leaveGameLogic(uid, params){
-        console.info('uid, params: %j', uid, params);
         let room = yield this.roomService.removePlayerByUid(code.sceneOne, uid);
-        console.info('roomList.length: %j', room.roomList.length);
         if(room.roomList.length >= 1){
             const leaveGameInfo = {
                 code: code.leaveGameCode,
@@ -59,28 +55,37 @@ class gameLogic {
 
     /**
      * 获得下一个问题
-     * @param questionId
+     * @param nextQuestionId
      * @param params
      * @returns {*}
      */
-    *nextQuestion(questionId, params){
-        console.info('4 nextQuestion ..............');
-        let question = yield this.questionService.getQuestionById(questionId);
-        console.info('4 > question: %j', question);
+    *nextQuestion(nextQuestionId, params){
+        let currentQuestion = yield this.questionService.getQuestionById(params.questionId);
+        let nextQuestion = yield this.questionService.getQuestionById(nextQuestionId);
         let player = yield this.playerService.getPlayerByPlayerId(params.uid.split("*")[0]);
-
-        let combat = gameLogic.setPlayerCombat({defense:question.defense, attack: question.attack}, {defense:player.defense, attack: player.attack});
-        // ...... 将数据存储到玩家，
-
-        // ...... 将数据广播到web页面
-
+        // 设置玩家的攻击和防御属性
+        const questionCombat = {defense: currentQuestion.defense, attack: currentQuestion.attack};
+        const playerCombat = {defense: player.defense, attack: player.attack};
+        // 玩家回答问题之后，攻击和防御属性改变的值。
+        let combat = gameLogic.setPlayerCombat(questionCombat, playerCombat);
+        // 将数据存储到玩家，
+        console.info('保存玩家之前的数据: %j', player.attack, player.defense);
+        let editPlayer = yield this.playerService.editPlayerByPlayerId(player.playerId, combat);
+        console.info('保存玩家之后的数据: %j', editPlayer.attack, editPlayer.defense);
+        // 将玩家的数据以及问题数据广播到web页面
+        const playerInfo = {
+            code: code.playerPropertyCode,
+            message: language.logic.playerProperty,
+            player: editPlayer
+        };
+        channelService.pushMessageByUid(code.onPlayerProperty, params.serverId, params.uid, code.sceneOne, playerInfo, null);
         const nextQuestionInfo = {
             code: code.nextQuestion,
             message: language.logic.nextQuestion,
-            question: question,
+            nextQuestion: nextQuestion,
         };
         channelService.pushMessageByUid(code.onNextQuestion, params.serverId, params.uid, code.sceneOne, nextQuestionInfo, null);
-        return question;
+        return nextQuestion;
     }
 
     /**
@@ -90,11 +95,15 @@ class gameLogic {
      * @returns {{attack: number, defense: number}}
      */
     static setPlayerCombat(question, player){
-        let attack = 0; let defense = 0;
-        if(player.defense > question.attack){
-            defense = player.defense - question.attack;
+        let defense = player.defense + question.defense;
+        if(defense < 0){
+            defense = 0;
+        } else {
+           if(defense > question.attack){
+               defense  = defense - question.attack;
+           }
         }
-        attack = player.attack + question.attack;
+        let attack = player.attack + question.attack;
         return {attack: attack, defense: defense}
     }
 

@@ -14,19 +14,18 @@ class roleHandler extends baseHandler{
     }
 
     answer(msg, session, callback){
-        console.info('answer ...... , :', msg);
         co(this.answerOption(msg, session, callback));
     }
 
     *answerOption(msg, session, callback){
-        const questionId = msg.hidden;
+        const nextQuestionId = msg.nextQuestionId;
+        const questionId = msg.questionId;
         let params = {
             serverId: session.get("serverId"),
-            uid: session.uid
+            uid: session.uid,
+            questionId: questionId
         };
-        console.info('1 params: %j', params);
-        this.app.rpc.role.roleRemote.getNextQuestion(session, questionId, params, (err, qdoc) => {
-            console.info('qdoc: %j', qdoc);
+        this.app.rpc.role.roleRemote.getNextQuestion(session, nextQuestionId, params, (err, qdoc) => {
             callback(null, qdoc);
         });
     }

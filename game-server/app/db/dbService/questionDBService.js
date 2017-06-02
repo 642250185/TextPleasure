@@ -15,7 +15,6 @@ class questionDBService {
     }
 
     *getQuestionById(questionId){
-        console.info('5 getQuestionById ..............');
         return yield questionModle.findQuestionById(questionId);
     }
 

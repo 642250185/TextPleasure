@@ -31,7 +31,6 @@ class questionModle {
     }
 
     static * findQuestionById(questionId){
-        console.info('6 findQuestionById ..............');
         return new Promise((resolve, reject) => {
             questionSchema.findOne({questionId: questionId}, (err, doc) => {
                 if(err) reject(err);
