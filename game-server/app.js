@@ -1,20 +1,22 @@
-const pomelo = require('pomelo');
-let Code = require('../shared/code');
-let language = require('../shared/language');
-const initialization = require('./app/initial/initialization');
 
+const xlsx = require('xlsx');
+const pomelo = require('pomelo');
+const Code = require('../shared/code');
+const language = require('../shared/language');
+const initialization = require('./app/initial/initialization');
+const questionModle = require('./app/db/modle/questionModle');
 
 /**
  * Init app for client.
  */
-var app = pomelo.createApp();
-app.set('name', 'TextPleasure');
+let app = pomelo.createApp();
+app.set('name', 'textPleasure');
 app.set('baseInitialization', new initialization(app));
 
 app.set('errorHandler', function (err, msg, resp, session, cb) {
     cb(null, {
-        code: Code.failed,
-        msg: language.requestError
+        code: Code.FAIL,
+        msg: language.common.requestError
     });
 });
 
@@ -28,9 +30,13 @@ app.configure('development|production', 'gate|connector', function(){
 });
 
 app.configure('development|production', 'role', function(){
-
+    const workbook = xlsx.readFile("./config/data/questionData.xlsx");
+    const sheetNames = workbook.SheetNames;
+    console.info('sheetNames: %j', sheetNames);
+    const workSheet = workbook.Sheets[sheetNames];
+    const work = xlsx.utils.sheet_to_json(workSheet);
+    console.info('joinQuestion : ', questionModle.joinQuestion(work));
 });
-
 
 
 app.start();

@@ -166,10 +166,10 @@ function initPlayerAndQuestionInfo(data) {
     $(".question").text(data.question.description);
     $(".answerA").attr("value", data.question.option1);
     $(".answerB").attr("value", data.question.option2);
-
+    //
     $(".hiddenA").attr("value", data.question.index_x);
     $(".hiddenB").attr("value", data.question.index_y);
-
+    // 问题本身ID
     $(".questionId").attr("value", data.question.questionId);
 }
 
