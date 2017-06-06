@@ -37,6 +37,13 @@ class gameLogic {
             };
             channelService.pushMessageByUid(code.onEnterGame, params.serverId, room.roomList, code.sceneOne, enterGameInfo, null);
         }
+        const enterGameForSelfInfo = {
+            code: code.enterGameForSelfCode,
+            message: language.connector.enterGameForSelf,
+            player: player,
+            question: question
+        };
+        channelService.pushMessageByUid(code.onEnterGameForSelf, params.serverId, uid, code.sceneOne, enterGameForSelfInfo, null);
         return {player: player, question: question};
     }
 
