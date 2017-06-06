@@ -32,10 +32,10 @@ app.configure('development|production', 'gate|connector', function(){
 app.configure('development|production', 'role', function(){
     const workbook = xlsx.readFile("./config/data/questionData.xlsx");
     const sheetNames = workbook.SheetNames;
-    console.info('sheetNames: %j', sheetNames);
+    console.info('需要导入的数据表: %j', sheetNames);
     const workSheet = workbook.Sheets[sheetNames];
     const work = xlsx.utils.sheet_to_json(workSheet);
-    console.info('joinQuestion : ', questionModle.joinQuestion(work));
+    questionModle.joinQuestion(work);
 });
 
 

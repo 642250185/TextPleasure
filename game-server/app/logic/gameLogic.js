@@ -29,6 +29,7 @@ class gameLogic {
                 code: code.enterGameCode,
                 message: language.connector.enterGame,
                 player: {
+                    playerId: player.playerId,
                     username: player.username,
                     defense: player.defense,
                     attack: player.attack

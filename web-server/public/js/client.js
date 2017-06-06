@@ -5,15 +5,19 @@
 
 var nickName;
 var pomelo = window.pomelo;
+var localPlayer = "localPlayer";
 
 $(document).ready(function () {
     setToolStatus(false);
     setGodieStatus(false);
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
-        $(".status .name").text(data.player.username);
-        $(".status .defense").text(data.player.defense);
-        $(".status .attack").text(data.player.attack);
+        var _player = localStorage.getItem(localPlayer);
+        if(_player.playerId == data.player.playerId){
+            $(".status .name").text(data.player.username);
+            $(".status .defense").text(data.player.defense);
+            $(".status .attack").text(data.player.attack);
+        }
     });
 
     pomelo.on("onLeaveGame", function (data) {
@@ -27,8 +31,8 @@ $(document).ready(function () {
         $(".answerB").attr("value", data.nextQuestion.option2);
 
         // 给隐藏属性设置值
-        $(".hiddenA").attr("value", data.nextQuestion.index_x);
-        $(".hiddenB").attr("value", data.nextQuestion.index_y);
+        $(".hiddenA").attr("value", data.nextQuestion.option1NextQuestion);
+        $(".hiddenB").attr("value", data.nextQuestion.option2NextQuestion);
 
         $(".questionId").attr("value", data.nextQuestion.questionId);
     });
@@ -54,12 +58,24 @@ $(document).ready(function () {
                 port: port,
                 log: true
             }, function () {
+
                 var route = "connector.entryHandler.login";
                 pomelo.request(route, {
                     username: nickName
                 }, function (data) {
-                    console.info('login > data:', data);
-                    initPlayerAndQuestionInfo(data);
+                    var clientPlayer = localStorage.getItem(localPlayer);
+                    if(clientPlayer == null){
+                        initPlayerAndQuestionInfo(data);
+                        localStorage.setItem(localPlayer, JSON.stringify(data.player));
+                    } else {
+                        if(clientPlayer.playerId != data.player.playerId){
+                            alert('请换一个浏览器，已有玩家登录');
+                            return;
+                        } else {
+                            initPlayerAndQuestionInfo(data);
+                            localStorage.setItem(localPlayer, JSON.stringify(data.player));
+                        }
+                    }
                     hideRegister();
                     setToolStatus(true);
                 });
@@ -157,7 +173,6 @@ function hideRegister() {
  * @param data
  */
 function initPlayerAndQuestionInfo(data) {
-    console.info('client >>> data: ', data);
     // 玩家信息
     $(".status .name").text(data.player.username);
     $(".status .defense").text(data.player.defense);
@@ -167,8 +182,8 @@ function initPlayerAndQuestionInfo(data) {
     $(".answerA").attr("value", data.question.option1);
     $(".answerB").attr("value", data.question.option2);
     //
-    $(".hiddenA").attr("value", data.question.index_x);
-    $(".hiddenB").attr("value", data.question.index_y);
+    $(".hiddenA").attr("value", data.question.option1NextQuestion);
+    $(".hiddenB").attr("value", data.question.option2NextQuestion);
     // 问题本身ID
     $(".questionId").attr("value", data.question.questionId);
 }
