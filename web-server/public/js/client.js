@@ -2,22 +2,72 @@
  * Created by root on 17-5-24.
  */
 
-
+var answer;
+var question;
 var nickName;
+var base = 1000;
+var increase = 25;
 var pomelo = window.pomelo;
-var localPlayer = "localPlayer";
+
+util = {
+    urlRE: /https?:\/\/([-\w\.]+)+(:\d+)?(\/([^\s]*(\?\S+)?)?)?/g,
+    //  html sanitizer
+    toStaticHTML: function(inputHtml) {
+        inputHtml = inputHtml.toString();
+        return inputHtml.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    },
+
+    zeroPad: function(digits, n) {
+        n = n.toString();
+        while(n.length < digits)
+            n = '0' + n;
+        return n;
+    },
+
+    timeString: function(date) {
+        var minutes = date.getMinutes().toString();
+        var hours = date.getHours().toString();
+        return this.zeroPad(2, hours) + ":" + this.zeroPad(2, minutes);
+    },
+
+    isBlank: function(text) {
+        var blank = /^\s*$/;
+        return(text.match(blank) !== null);
+    }
+};
+
+function addMessage(from, target, text, time) {
+    var messageElement = $(document.createElement("table"));
+    messageElement.addClass("message");
+    text = util.toStaticHTML(text);
+    var content = '<tr>' +
+        '  <td class="date">' + util.timeString(time) + '</td>' +
+        '  <td class="nick">' + util.toStaticHTML(from) + 'Q:' + question + '</td>' +
+        '  <td class="msg-text">' + util.toStaticHTML(from) + 'Q:' + answer + '</td>' +
+        '</tr>';
+    messageElement.html(content);
+    //the log is the stream that we view
+    $("#history").append(messageElement);
+    base += increase;
+    scrollDown(base);
+};
+
+function scrollDown(base) {
+    window.scrollTo(0, base);
+};
 
 $(document).ready(function () {
     setToolStatus(false);
     setGodieStatus(false);
+
+    /** ----------->>> 接受广播处理 <<<-----------*/
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
-        var _player = localStorage.getItem(localPlayer);
-        if(_player.playerId == data.player.playerId){
-            $(".status .name").text(data.player.username);
-            $(".status .defense").text(data.player.defense);
-            $(".status .attack").text(data.player.attack);
-        }
+    });
+
+    pomelo.on("onEnterGameForSelf", function (data) {
+        console.info('玩家上线初始化数据: ', data);
+        initPlayerAndQuestionInfo(data);
     });
 
     pomelo.on("onLeaveGame", function (data) {
@@ -63,19 +113,6 @@ $(document).ready(function () {
                 pomelo.request(route, {
                     username: nickName
                 }, function (data) {
-                    var clientPlayer = localStorage.getItem(localPlayer);
-                    if(clientPlayer == null){
-                        initPlayerAndQuestionInfo(data);
-                        localStorage.setItem(localPlayer, JSON.stringify(data.player));
-                    } else {
-                        if(clientPlayer.playerId != data.player.playerId){
-                            alert('请换一个浏览器，已有玩家登录');
-                            return;
-                        } else {
-                            initPlayerAndQuestionInfo(data);
-                            localStorage.setItem(localPlayer, JSON.stringify(data.player));
-                        }
-                    }
                     hideRegister();
                     setToolStatus(true);
                 });

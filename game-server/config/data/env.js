@@ -5,7 +5,7 @@
 const IP = '127.0.0.1';
 
 module.exports.mongodb = {
-    'url'    : `mongodb://${IP}:27017/TextPleasure`,
+    'url'    : `mongodb://${IP}:27017/textPleasure`,
     'options': {
         db: {
             'native_parser': true
