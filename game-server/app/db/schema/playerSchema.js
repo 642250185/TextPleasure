@@ -18,6 +18,10 @@ let PlayerSchema = new Schema({
     attack: {   // 攻击
         type: Number
     },
+    level: {    // 等级
+        type: Number,
+        default: 0
+    },
     createDate: {
         type: Date
     }

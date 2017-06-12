@@ -5,45 +5,16 @@
 var answer;
 var question;
 var nickName;
-var base = 1000;
-var increase = 25;
+var base = 500;
+var increase = 250;
 var pomelo = window.pomelo;
 
-util = {
-    urlRE: /https?:\/\/([-\w\.]+)+(:\d+)?(\/([^\s]*(\?\S+)?)?)?/g,
-    //  html sanitizer
-    toStaticHTML: function(inputHtml) {
-        inputHtml = inputHtml.toString();
-        return inputHtml.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    },
-
-    zeroPad: function(digits, n) {
-        n = n.toString();
-        while(n.length < digits)
-            n = '0' + n;
-        return n;
-    },
-
-    timeString: function(date) {
-        var minutes = date.getMinutes().toString();
-        var hours = date.getHours().toString();
-        return this.zeroPad(2, hours) + ":" + this.zeroPad(2, minutes);
-    },
-
-    isBlank: function(text) {
-        var blank = /^\s*$/;
-        return(text.match(blank) !== null);
-    }
-};
-
-function addMessage(from, target, text, time) {
+function addMessage(from, text) {
     var messageElement = $(document.createElement("table"));
     messageElement.addClass("message");
-    text = util.toStaticHTML(text);
     var content = '<tr>' +
-        '  <td class="date">' + util.timeString(time) + '</td>' +
-        '  <td class="nick">' + util.toStaticHTML(from) + 'Q:' + question + '</td>' +
-        '  <td class="msg-text">' + util.toStaticHTML(from) + 'Q:' + answer + '</td>' +
+        '  <td class="questionFrom">' + '问题: ' + question + '</td>' +
+        '  <td class="answerText">' + '    &nbsp;&nbsp;&nbsp;&nbsp;回答: ' + answer + '</td>' +
         '</tr>';
     messageElement.html(content);
     //the log is the stream that we view
@@ -63,6 +34,7 @@ $(document).ready(function () {
     /** ----------->>> 接受广播处理 <<<-----------*/
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
+        $(".online").text(data.player.onlinePlayerNum);
     });
 
     pomelo.on("onEnterGameForSelf", function (data) {
@@ -72,10 +44,14 @@ $(document).ready(function () {
 
     pomelo.on("onLeaveGame", function (data) {
         console.info('玩家下线通知: ', data);
+        $(".online").text(data.onlinePlayerNum);
     });
 
     pomelo.on("onNextQuestion", function (data) {
-        console.info("下一个问题的数据",data);
+        console.info("next Question Data: ",data);
+        question = $(".question").text();
+        console.info('question : answer > ', question, answer);
+        addMessage(question, answer);
         $(".question").text(data.nextQuestion.description);
         $(".answerA").attr("value", data.nextQuestion.option1);
         $(".answerB").attr("value", data.nextQuestion.option2);
@@ -125,6 +101,7 @@ $(document).ready(function () {
     // 处理选项一
     $(".answerA").click(function () {
         var answerA = $(".answerA").attr("value");
+        answer = answerA;
         var nextQuestionId = $(".hiddenA").attr("value");
         var questionId = $(".questionId").attr("value");
         var route = "role.roleHandler.answer";
@@ -132,13 +109,12 @@ $(document).ready(function () {
             nextQuestionId: nextQuestionId,
             answer: answerA,
             questionId: questionId
-        }, function (data) {
-            console.info('answerA > Click: ', data);
-        });
+        }, function (data) {});
     });
 
     $(".answerB").click(function () {
         var answerB = $(".answerB").attr("value");
+        answer = answerB;
         var nextQuestionId = $(".hiddenB").attr("value");
         var questionId = $(".questionId").attr("value");
         var route = "role.roleHandler.answer";
@@ -146,9 +122,7 @@ $(document).ready(function () {
             nextQuestionId: nextQuestionId,
             answer: answerB,
             questionId: questionId
-        }, function (data) {
-            console.info('answerB > Click: ', data);
-        });
+        }, function (data) {});
     });
 
 });
@@ -176,35 +150,6 @@ function getConnector(cb) {
     });
 }
 
-
-/**
- * 设置结束区域的隐藏和关闭
- * @param status
- */
-function setGodieStatus(status) {
-    if(status){
-        $("#godie").show();
-    } else {
-        $("#godie").hide();
-    }
-}
-
-/**
- * 设置工具栏区域的隐藏和关闭
- * @param status
- */
-function setToolStatus(status) {
-    if(status){
-        $("#tool").show();
-    } else {
-        $("#tool").hide();
-    }
-}
-
-function hideRegister() {
-    $("#register").hide();
-}
-
 /**
  * 玩家上线后，设置玩家的信息及首个问答数据。
  * @param data
@@ -214,6 +159,9 @@ function initPlayerAndQuestionInfo(data) {
     $(".status .name").text(data.player.username);
     $(".status .defense").text(data.player.defense);
     $(".status .attack").text(data.player.attack);
+    var playerLv = setPlayerLevel(data.player.level);
+    $(".status .level").text(playerLv);
+
     // 问答信息
     $(".question").text(data.question.description);
     $(".answerA").attr("value", data.question.option1);
@@ -234,8 +182,68 @@ function setPlayerInfo(data) {
     if(data.player.defense <= 0){
         setToolStatus(false);
         setGodieStatus(true);
+        setHistoryStatus(false);
     } else {
         $(".status .defense").text(data.player.defense);
         $(".status .attack").text(data.player.attack);
+        var playerLevel = setPlayerLevel(data.player.level);
+        $(".status .level").text(playerLevel);
+    }
+}
+
+/**
+ * 设置结束区域的隐藏和关闭
+ * @param status
+ */
+function setGodieStatus(status) {
+    if(status){
+        $("#godie").show();
+    } else {
+        $("#godie").hide();
+    }
+}
+
+/**
+ * 设置历史消息区的隐藏和关闭
+ * @param status
+ */
+function setHistoryStatus(status) {
+    if(status){
+        $("#history").show();
+    } else {
+        $("#history").hide();
+    }
+}
+
+/**
+ * 设置工具栏区域的隐藏和关闭
+ * @param status
+ */
+function setToolStatus(status) {
+    if(status){
+        $("#tool").show();
+    } else {
+        $("#tool").hide();
+    }
+}
+
+function hideRegister() {
+    $("#register").hide();
+}
+
+function setPlayerLevel(level) {
+    switch(level) {
+        case 1 : return "新秀";
+            break;
+        case 2 : return "少侠";
+            break;
+        case 3 : return "大侠";
+            break;
+        case 4 : return "掌门";
+            break;
+        case 5 : return "宗师";
+            break;
+        default: return "盟主";
+            break;
     }
 }

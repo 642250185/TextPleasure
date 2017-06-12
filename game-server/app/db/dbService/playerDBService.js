@@ -25,6 +25,10 @@ class playerDBService {
         return yield playerModle.updatePlayerByPlayerId(playerId, params);
     }
 
+    *editLevelByPlayerId(playerId, level){
+        return yield playerModle.updateLevelByPlayerId(playerId, level);
+    }
+
 }
 
 

@@ -29,7 +29,7 @@ class gameLogic {
                 code: code.enterGameCode,
                 message: language.connector.enterGame,
                 player: {
-                    playerId: player.playerId,
+                    onlinePlayerNum: room.roomList.length,
                     username: player.username,
                     defense: player.defense,
                     attack: player.attack
@@ -43,6 +43,9 @@ class gameLogic {
             player: player,
             question: question
         };
+
+        let level = gameLogic.setPlayerLevel(player.level);
+        enterGameForSelfInfo.player.level = level;
         channelService.pushMessageByUid(code.onEnterGameForSelf, params.serverId, uid, code.sceneOne, enterGameForSelfInfo, null);
         return {player: player, question: question};
     }
@@ -53,7 +56,8 @@ class gameLogic {
             const leaveGameInfo = {
                 code: code.leaveGameCode,
                 message: language.connector.leaveGame,
-                uid: uid
+                uid: uid,
+                onlinePlayerNum: room.roomList.length
             };
             channelService.pushMessageByUid(code.onLeaveGame, params.serverId, room.roomList, code.sceneOne, leaveGameInfo, null);
         }
@@ -76,22 +80,27 @@ class gameLogic {
         const playerCombat = {defense: player.defense, attack: player.attack};
         // 玩家回答问题之后，攻击和防御属性改变的值。
         let combat = gameLogic.setPlayerCombat(questionCombat, playerCombat);
-        // 将数据存储到玩家，
-        console.info('保存玩家之前的数据: %j', player.attack, player.defense);
+        // 获得玩家的等级
+        let playerLevel = gameLogic.setPlayerLevel(player.attack);
+        console.info('playerLevel: %j', playerLevel);
+        combat.level = playerLevel;
+        // 将数据存储到玩家
         let editPlayer = yield this.playerService.editPlayerByPlayerId(player.playerId, combat);
-        console.info('保存玩家之后的数据: %j', editPlayer.attack, editPlayer.defense);
+
         // 将玩家的数据以及问题数据广播到web页面
         const playerInfo = {
             code: code.playerPropertyCode,
             message: language.logic.playerProperty,
             player: editPlayer
         };
+        // 负责玩家信息
         channelService.pushMessageByUid(code.onPlayerProperty, params.serverId, params.uid, code.sceneOne, playerInfo, null);
         const nextQuestionInfo = {
             code: code.nextQuestion,
             message: language.logic.nextQuestion,
             nextQuestion: nextQuestion,
         };
+        // 负责问题信息
         channelService.pushMessageByUid(code.onNextQuestion, params.serverId, params.uid, code.sceneOne, nextQuestionInfo, null);
         return nextQuestion;
     }
@@ -113,6 +122,27 @@ class gameLogic {
         }
         let attack = player.attack + question.attack;
         return {attack: attack, defense: defense}
+    }
+
+    /**
+     * 玩家的等级计算
+     * @param level 玩家的等级
+     * @returns {number}
+     */
+    static setPlayerLevel(level){
+        if(level <= 60){
+            return 1;   // 新秀
+        } else if(level < 150){
+            return 2;   // 少侠
+        } else if(level < 230){
+            return 3;   // 大侠
+        } else if(level < 300){
+            return 4;   // 掌门
+        } else if(level < 370){
+            return 5;   // 宗师
+        } else {
+            return 6;   // 盟主
+        }
     }
 
 }
