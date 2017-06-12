@@ -1,0 +1,11 @@
+package userProto;
+
+message reqUser{
+    required string username = 1;
+    required string password = 2;
+}
+
+message resUser{
+    required string sessionid = 1;
+    required string token = 2;
+}
