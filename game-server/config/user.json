@@ -1,0 +1,36 @@
+{
+  "nested": {
+    "userProto": {
+      "nested": {
+        "reqUser": {
+          "fields": {
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "resUser": {
+          "fields": {
+            "sessionid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}

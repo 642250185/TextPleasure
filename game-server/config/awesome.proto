@@ -1,0 +1,6 @@
+package awesome;
+
+message LoginMessage {
+    required string username = 1;
+    required string password = 2;
+}
