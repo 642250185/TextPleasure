@@ -1,0 +1,22 @@
+{
+  "nested": {
+    "awesome": {
+      "nested": {
+        "LoginMessage": {
+          "fields": {
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}
