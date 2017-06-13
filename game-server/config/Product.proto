@@ -1,0 +1,8 @@
+package Ecommerce;
+
+message Product {
+    required bool available = 1; // 是否上架（布林值）
+    optional string name = 2;    // 產品名稱（字串）
+    optional string desc = 3;    // 產品說明（字串）
+    optional float price = 4;    // 價格（浮點數）
+}

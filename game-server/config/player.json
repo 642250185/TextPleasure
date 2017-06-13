@@ -1,0 +1,22 @@
+{
+  "nested": {
+    "player": {
+      "nested": {
+        "playerMessage": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "nickname": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}

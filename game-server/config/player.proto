@@ -1,0 +1,6 @@
+package player;
+
+message playerMessage {
+    required int32 id = 1;
+    required string nickname = 2;
+}
