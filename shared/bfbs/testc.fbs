@@ -1,0 +1,7 @@
+table testc {
+    x: float;
+    y: float;
+    z: float;
+}
+
+root_type testc;

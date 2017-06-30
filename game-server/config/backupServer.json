@@ -1,0 +1,12 @@
+{
+  "connector":[
+    {"id":"backup-connector-server-1", "host":"127.0.0.1", "port":4053, "clientPort": 3053, "frontend": true},
+    {"id":"backup-connector-server-2", "host":"127.0.0.1", "port":4054, "clientPort": 3054, "frontend": true},
+    {"id":"backup-connector-server-3", "host":"127.0.0.1", "port":4055, "clientPort": 3055, "frontend": true}
+  ],
+  "role":[
+    {"id":"backup-chat-server-1", "host":"127.0.0.1", "port":6053},
+    {"id":"backup-chat-server-2", "host":"127.0.0.1", "port":6054},
+    {"id":"backup-chat-server-3", "host":"127.0.0.1", "port":6055}
+  ]
+}

@@ -1,1 +1,10 @@
-{}
+{
+  "gate.gateHandler.getConnector":
+  {
+    "required string username":1
+  },
+  "connector.entryHandler.login":
+  {
+    "required string username":1
+  }
+}

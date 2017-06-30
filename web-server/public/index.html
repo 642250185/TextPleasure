@@ -16,6 +16,8 @@
         <script src="js/lib/build/build.js" type="text/javascript"></script>
         <script src="js/lib/jquery-1.8.0.min.js" type="text/javascript"></script>
 
+        <script src="js/flatbuffers.js" type="text/javascript"></script>
+        <script src="js/schema/tst_generated.js" type="text/javascript" ></script>
         <script type="text/javascript">require('boot')</script>
         <script src="js/client.js"></script>
 
@@ -50,5 +52,11 @@
         <div id="godie">
             <h1>Game Over</h1>
         </div>
+
+        <div>
+            <input type="file" id="files" style="display:none" onchange="import2();"/>
+            <input type="button" id="import" value="导入"/>
+        </div>
+
     </body>
 </html>

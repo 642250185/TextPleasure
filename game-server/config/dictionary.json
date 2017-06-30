@@ -1,1 +1,8 @@
-{}
+[
+  "onEnterGameForSelf",
+  "onEnterGame",
+  "onLeaveGame",
+  "onNextQuestion",
+  "onPlayerProperty",
+  "onTest"
+]

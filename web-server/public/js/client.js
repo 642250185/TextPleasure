@@ -32,25 +32,43 @@ $(document).ready(function () {
     setGodieStatus(false);
 
     /** ----------->>> 接受广播处理 <<<-----------*/
+    /**
+     * 玩家进入游戏
+     */
     pomelo.on("onEnterGame", function (data) {
         console.info('玩家上线通知: ', data);
         $(".online").text(data.player.onlinePlayerNum);
     });
 
+    /**
+     * 玩家自己
+     */
     pomelo.on("onEnterGameForSelf", function (data) {
         console.info('玩家上线初始化数据: ', data);
         initPlayerAndQuestionInfo(data);
     });
 
+    /**
+     * 测试广播
+     */
+    pomelo.on("onTest", function (data) {
+        console.info('测试广播: ', data);
+
+    });
+
+    /**
+     * 玩家离开
+     */
     pomelo.on("onLeaveGame", function (data) {
         console.info('玩家下线通知: ', data);
         $(".online").text(data.onlinePlayerNum);
     });
 
+    /**
+     * 下一个问题信息
+     */
     pomelo.on("onNextQuestion", function (data) {
-        console.info("next Question Data: ",data);
         question = $(".question").text();
-        console.info('question : answer > ', question, answer);
         addMessage(question, answer);
         $(".question").text(data.nextQuestion.description);
         $(".answerA").attr("value", data.nextQuestion.option1);
@@ -59,15 +77,16 @@ $(document).ready(function () {
         // 给隐藏属性设置值
         $(".hiddenA").attr("value", data.nextQuestion.option1NextQuestion);
         $(".hiddenB").attr("value", data.nextQuestion.option2NextQuestion);
-
         $(".questionId").attr("value", data.nextQuestion.questionId);
     });
 
+    /**
+     * 玩家信息
+     */
     pomelo.on("onPlayerProperty", function (data) {
-        console.info('设置玩家的攻击和防御数据: ', data);
+        // console.info('设置玩家的攻击和防御数据: ', data);
         setPlayerInfo(data);
     });
-
 
     // 处理登录按钮
     $(".login").click(function () {
@@ -84,12 +103,11 @@ $(document).ready(function () {
                 port: port,
                 log: true
             }, function () {
-
                 var route = "connector.entryHandler.login";
                 pomelo.request(route, {
                     username: nickName
                 }, function (data) {
-                    hideRegister();
+                    setRegisterStatus(false);
                     setToolStatus(true);
                 });
             });
@@ -108,7 +126,7 @@ $(document).ready(function () {
         pomelo.request(route, {
             nextQuestionId: nextQuestionId,
             answer: answerA,
-            questionId: questionId
+            questionId: questionId,
         }, function (data) {});
     });
 
@@ -125,8 +143,42 @@ $(document).ready(function () {
         }, function (data) {});
     });
 
+
+    $("#import").click(function(){//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
+        $("#files").click();
+    });
+
 });
 
+
+function import2(){
+    var selectedFile = document.getElementById("files").files[0];//获取读取的File对象
+    console.info(' >>>>>> selectedFile : ', selectedFile);
+    var name = selectedFile.name; //读取选中文件的文件名
+    var size = selectedFile.size; //读取选中文件的大小
+    console.info(" >>>>>>>> 文件名 : " + name + " 大小 ： " + size);
+
+    var reader = new FileReader();//这里是核心！！！读取操作就是由它完成的。
+    reader.readAsText(selectedFile);//读取文件的内容
+
+    reader.onload = function(){
+        console.error('读取出来的二进制文件 : ',this.result);//当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
+
+        // 解析二进制文件
+        var iii = new Uint8Array(reader.result);
+        console.info('iii : ', iii);
+        let buff = new flatbuffers.ByteBuffer(this.result);
+        console.info('buff : ', buff);
+
+        // var data = new Uint8Array(reader.result);
+        // var buf = new flatbuffers.ByteBuffer(data);
+
+        let monster = xone.genflat.LoginRequest.getRootAsLoginRequest(buff);
+        console.info(' msgID :%j, username :%j, password :%j ', monster.msgID(), monster.username(), monster.password());
+    };
+
+
+}
 
 // 获得所有的服务器列表
 function getConnector(cb) {
@@ -137,7 +189,7 @@ function getConnector(cb) {
         log: true
     }, function () {
         pomelo.request(route, {
-
+            username: "zhangsan"
         }, function (data) {
             // 关闭连接
             pomelo.disconnect();
@@ -178,7 +230,6 @@ function initPlayerAndQuestionInfo(data) {
  * @param data
  */
 function setPlayerInfo(data) {
-    console.info('>>> data: >>> %j', data);
     if(data.player.defense <= 0){
         setToolStatus(false);
         setGodieStatus(true);
@@ -227,10 +278,22 @@ function setToolStatus(status) {
     }
 }
 
-function hideRegister() {
-    $("#register").hide();
+/**
+ * 设置登陆区域的隐藏和关闭
+ */
+function setRegisterStatus(status) {
+    if(status){
+        $("#register").show();
+    } else {
+        $("#register").hide();
+    }
 }
 
+/**
+ * 等级设置
+ * @param level
+ * @returns {*}
+ */
 function setPlayerLevel(level) {
     switch(level) {
         case 1 : return "新秀";

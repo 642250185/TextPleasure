@@ -18,6 +18,11 @@ class entryHandler extends baseHandler {
 	}
 
 	*loginAsync(msg, session, callback){
+
+        let statusService = this.app.get('statusService');
+        console.error('statusService : %j', statusService);
+
+
 	    let player = yield this.playerService.getPlayerByName(msg.username);
 	    let serverId = this.app.get("serverId");
 	    let uid = null;
@@ -37,6 +42,10 @@ class entryHandler extends baseHandler {
             co(this.logOut(session));
         });
         this.app.rpc.role.roleRemote.enterGame(session, uid, {serverId: serverId}, (err, doc) => {
+            statusService.getSidsByUid(uid, function (err, list) {
+                console.info('err, list : %j', err, list);
+            });
+
             callback(null, doc);
         });
     }

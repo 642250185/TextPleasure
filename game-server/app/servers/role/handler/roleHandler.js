@@ -4,7 +4,6 @@
 const co = require('co');
 const baseHandler = require('../../baseHandler');
 
-
 module.exports = (app) => {return new roleHandler(app)};
 
 class roleHandler extends baseHandler{

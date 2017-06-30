@@ -4,6 +4,10 @@
   "private": false,
   "dependencies": {
     "express": "3.4.8",
+    "fs": "0.0.1-security",
     "protobufjs": "^6.8.0"
+  },
+  "devDependencies": {
+    "webpack": "^3.0.0"
   }
 }

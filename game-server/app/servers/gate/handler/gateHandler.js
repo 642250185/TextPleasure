@@ -15,6 +15,7 @@ class gateHandler extends baseHandler{
     }
 
     getConnector(msg, session, cb){
+        console.info('msg : %j', msg);
         const servers = this.app.getServersByType('connector');
         if(_.isEmpty(servers)){
             cb(null, {

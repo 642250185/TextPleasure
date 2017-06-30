@@ -1,14 +1,16 @@
 /**
  * Created by root on 17-5-23.
  */
-
+const fs = require('fs');
 const code = require('../../../shared/code');
 const language = require('../../../shared/language');
 const channelService = require('../initial/channelServiceController');
-
 const roomDBService = require('../db/dbService/roomDBService');
 const playerDBService = require('../db/dbService/playerDBService');
 const questionDBService = require('../db/dbService/questionDBService');
+
+const flatbuffers = require('../../../web-server/public/js/flatbuffers').flatbuffers;
+const xone = require('../../../web-server/public/js/schema/tst_generated').xone;
 
 class gameLogic {
 
@@ -40,13 +42,47 @@ class gameLogic {
         const enterGameForSelfInfo = {
             code: code.enterGameForSelfCode,
             message: language.connector.enterGameForSelf,
-            player: player,
-            question: question
+            player: {
+                username:player.username,
+                defense:player.defense,
+                attack:player.attack,
+                level:player.level
+            },
+            question: {
+                description: question.description,
+                option1: question.option1,
+                option2: question.option2,
+                option1NextQuestion: question.option1NextQuestion,
+                option2NextQuestion: question.option2NextQuestion,
+                questionId: question.questionId
+            }
         };
 
         let level = gameLogic.setPlayerLevel(player.level);
         enterGameForSelfInfo.player.level = level;
         channelService.pushMessageByUid(code.onEnterGameForSelf, params.serverId, uid, code.sceneOne, enterGameForSelfInfo, null);
+        // ==============================================================>>>>>>>>>>> start 测试代码
+        // let builder = new flatbuffers.Builder(1204);
+        // let username = builder.createString("zlh");
+        // let password = builder.createString("xxx");
+        // xone.genflat.LoginRequest.startLoginRequest(builder);
+        // xone.genflat.LoginRequest.addUsername(builder,username);
+        // xone.genflat.LoginRequest.addPassword(builder,password);
+        // xone.genflat.LoginRequest.addMsgID(builder, 5);
+        // let req = xone.genflat.LoginRequest.endLoginRequest(builder);
+        //
+        // builder.finish(req) ;//创建结束时记得调用这个finish方法。
+        // let buf = builder.asUint8Array();
+        // console.info('server >>>>> buf : %j', buf);
+        // ==============================================================>>>>>>>>>>> end 测试代码
+
+        const buf = {
+            id: 55,
+            name: "zhangsan",
+            age: 24
+        };
+        channelService.pushMessageByUid("onTest", params.serverId, uid, code.sceneOne,  buf, null);
+
         return {player: player, question: question};
     }
 

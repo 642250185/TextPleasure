@@ -1,1 +1,14 @@
-{}
+{
+  "gate.gateHandler.getConnector":
+  {
+    "required uInt32 code":1,
+    "optional string message":2,
+    "optional string host":3,
+    "optional uInt32 port":4
+  },
+  "onTest":{
+    "required uInt32 id": 1,
+    "required string name": 2,
+    "required uInt32 age": 3
+  }
+}

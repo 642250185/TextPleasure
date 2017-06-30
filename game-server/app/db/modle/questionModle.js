@@ -48,7 +48,7 @@ class questionModle {
                     question.option2 = work[i].option2;
                     question.createDate = utils.formatDate(new Date());
                     questionSchema.create(question, (err, doc) => {
-                        console.info('err, 数据导入: %j', err, _.isEmpty(doc) == false ? "success" : "failure");
+                        // console.info('err, 数据导入: %j', err, _.isEmpty(doc) == false ? "success" : "failure");
                     });
                 }
             } catch (err){
